@@ -3,7 +3,7 @@ const colors = require("colors");
 const cors = require("cors");
 const dotenv = require("dotenv").config();
 const { MongoClient, ServerApiVersion } = require("mongodb");
-const port = process.env.PORT || 5000;
+const port = process.env.PORT ||5000;
 
 const app = express();
 
@@ -21,7 +21,19 @@ const client = new MongoClient(uri, {
 
 const run=async()=>{
     try{
-      throw Error('HELLO DEAR')
+        const productsCollection=client.db('Ema-jahn_ProductCollection').collection('products');
+
+
+        app.get('/products',async(req,res)=>{
+            const qurey={};
+            const cursor=  productsCollection.find(qurey);
+            const products= await cursor.toArray();
+            res.send(products);
+            
+        })
+
+     
+       
     }
     catch{
      (error)=>{
@@ -43,9 +55,9 @@ run()
 // });
 
 app.get("/", (req, res) => {
-  console.log("The Emah-jahon server is running");
+  res.send('The Ema-jahn-server is running')
 });
 
-app.listen(() => {
+app.listen(port,() => {
   console.log(`The Emah-Jahon server is running on port ${port}`.bgGreen);
 });
